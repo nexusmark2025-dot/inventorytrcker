@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Nexus Inventory Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --success: #10b981;
+            --error: #ef4444;
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-4);
+            color: var(--gray-800);
+            line-height: 1.5;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 420px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: var(--space-8);
+            color: white;
+        }
+
+        .logo-icon {
+            width: 64px;
+            height: 64px;
+            background: white;
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-4);
+            box-shadow: var(--shadow-lg);
+            color: var(--primary);
+        }
+
+        .brand-header h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: var(--space-1);
+            letter-spacing: -0.025em;
+        }
+
+        .brand-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .auth-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .auth-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--gray-200);
+            background: var(--gray-50);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: var(--space-4);
+            border: none;
+            background: transparent;
+            color: var(--gray-500);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .tab-btn:hover {
+            color: var(--gray-700);
+            background: var(--gray-100);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            background: white;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .auth-form {
+            display: none;
+            padding: var(--space-6);
+        }
+
+        .auth-form.active {
+            display: block;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .form-group {
+            margin-bottom: var(--space-4);
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: var(--space-2);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: var(--space-3) var(--space-4);
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            font-size: 0.9375rem;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .form-group input:hover {
+            border-color: var(--gray-400);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: var(--gray-400);
+        }
+
+        .help-text {
+            display: block;
+            margin-top: var(--space-1);
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-6);
+            font-size: 0.875rem;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            color: var(--gray-600);
+            cursor: pointer;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+
+        .forgot-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-3) var(--space-6);
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.9375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            gap: var(--space-2);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-full {
+            width: 100%;
+            padding: var(--space-4);
+        }
+
+        .btn-text {
+            background: transparent;
+            color: var(--gray-600);
+            padding: var(--space-2);
+            margin-top: var(--space-4);
+        }
+
+        .btn-text:hover {
+            color: var(--gray-800);
+        }
+
+        .btn-loader {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .alert-container {
+            margin-top: var(--space-4);
+        }
+
+        .alert {
+            padding: var(--space-4);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            gap: var(--space-4);
+        }
+
+        .loading-overlay p {
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--gray-200);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: var(--space-6);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.875rem;
+        }
+
+        .disclaimer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            margin-top: var(--space-4);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            body { padding: var(--space-3); }
+            .auth-container { max-width: 100%; }
+            .brand-header h1 { font-size: 1.5rem; }
+            .auth-form { padding: var(--space-4); }
+            .form-options {
+                flex-direction: column;
+                gap: var(--space-3);
+                align-items: flex-start;
+            }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); }
+            .auth-card { background: var(--gray-800); }
+            .auth-tabs { background: var(--gray-900); border-color: var(--gray-700); }
+            .tab-btn.active { background: var(--gray-800); }
+            .form-group input {
+                background: var(--gray-900);
+                border-color: var(--gray-700);
+                color: var(--gray-100);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="brand-header">
+            <div class="logo-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 3v18h18"/>
+                    <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/>
+                </svg>
+            </div>
+            <h1>Nexus Inventory Pro</h1>
+            <p>Business Management System</p>
+        </div>
+
+        <div class="auth-card">
+            <div class="auth-tabs">
+                <button class="tab-btn active" id="loginTab" data-tab="login">Sign In</button>
+                <button class="tab-btn" id="registerTab" data-tab="register">Register</button>
+            </div>
+
+            <form id="loginForm" class="auth-form active">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="you@company.com" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password">
+                </div>
+                <div class="form-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberMe">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" id="forgotPasswordLink" class="forgot-link">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-loader hidden"></span>
+                </button>
+            </form>
+
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label for="regBusinessName">Business Name</label>
+                    <input type="text" id="regBusinessName" placeholder="Your Business Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Email Address</label>
+                    <input type="email" id="regEmail" placeholder="you@company.com" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" placeholder="Min 6 characters" required minlength="6">
+                    <small class="help-text">Must be at least 6 characters</small>
+                </div>
+                <div class="form-group">
+                    <label for="regConfirmPassword">Confirm Password</label>
+                    <input type="password" id="regConfirmPassword" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">
+                    <span class="btn-text">Create Account</span>
+                    <span class="btn-loader hidden"></span>
+                </button>
+                <p class="disclaimer">By registering, you agree to our Terms and Privacy Policy.</p>
+            </form>
+
+            <form id="forgotForm" class="auth-form">
+                <div class="form-group">
+                    <label for="resetEmail">Email Address</label>
+                    <input type="email" id="resetEmail" placeholder="Enter your email" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">
+                    <span class="btn-text">Send Reset Link</span>
+                    <span class="btn-loader hidden"></span>
+                </button>
+                <button type="button" class="btn btn-text" id="backToLogin">← Back to Login</button>
+            </form>
+        </div>
+
+        <div id="alertContainer" class="alert-container"></div>
+
+        <footer class="auth-footer">
+            <p>&copy; 2026 Nexus Inventory Pro. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Authenticating...</p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword,
+            sendPasswordResetEmail,
+            onAuthStateChanged,
+            signOut,
+            updateProfile
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { 
+            getDatabase, 
+            ref, 
+            set, 
+            get 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAmla5AV04U435JKEVW7J8CPsCJ0kY79_k",
+  authDomain: "nexusinventory-245ed.firebaseapp.com",
+  databaseURL: "https://nexusinventory-245ed-default-rtdb.firebaseio.com",
+  projectId: "nexusinventory-245ed",
+  storageBucket: "nexusinventory-245ed.firebasestorage.app",
+  messagingSenderId: "393445785962",
+  appId: "1:393445785962:web:d710b63c9efaba8eb46513",
+  measurementId: "G-KJ9DTS64S0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        const elements = {
+            loginForm: document.getElementById('loginForm'),
+            registerForm: document.getElementById('registerForm'),
+            forgotForm: document.getElementById('forgotForm'),
+            loginTab: document.getElementById('loginTab'),
+            registerTab: document.getElementById('registerTab'),
+            loginEmail: document.getElementById('loginEmail'),
+            loginPassword: document.getElementById('loginPassword'),
+            rememberMe: document.getElementById('rememberMe'),
+            regBusinessName: document.getElementById('regBusinessName'),
+            regEmail: document.getElementById('regEmail'),
+            regPassword: document.getElementById('regPassword'),
+            regConfirmPassword: document.getElementById('regConfirmPassword'),
+            resetEmail: document.getElementById('resetEmail'),
+            forgotPasswordLink: document.getElementById('forgotPasswordLink'),
+            backToLogin: document.getElementById('backToLogin'),
+            alertContainer: document.getElementById('alertContainer'),
+            loadingOverlay: document.getElementById('loadingOverlay')
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                showLoading('Checking session...');
+                try {
+                    const userData = await getUserData(user.uid);
+                    if (userData) {
+                        storeSessionData(user.uid, userData.tenantId, userData.role);
+                        redirectToDashboard();
+                    } else {
+                        await signOut(auth);
+                        showError('User data not found. Please contact support.');
+                    }
+                } catch (error) {
+                    showError('Session verification failed. Please login again.');
+                } finally {
+                    hideLoading();
+                }
+            }
+        });
+
+        elements.loginTab.addEventListener('click', () => switchTab('login'));
+        elements.registerTab.addEventListener('click', () => switchTab('register'));
+        elements.forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showForgotForm();
+        });
+        elements.backToLogin.addEventListener('click', () => {
+            showLoginForm();
+        });
+        elements.loginForm.addEventListener('submit', handleLogin);
+        elements.registerForm.addEventListener('submit', handleRegister);
+        elements.forgotForm.addEventListener('submit', handleForgotPassword);
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = elements.loginEmail.value.trim();
+            const password = elements.loginPassword.value;
+            
+            if (!validateEmail(email) || !password) {
+                showError('Please enter valid email and password');
+                return;
+            }
+            
+            setLoading(elements.loginForm, true);
+            
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                const userData = await getUserData(user.uid);
+                
+                if (!userData) {
+                    throw new Error('User profile not found in database');
+                }
+                
+                const remember = elements.rememberMe.checked;
+                storeSessionData(user.uid, userData.tenantId, userData.role, remember);
+                redirectToDashboard();
+                
+            } catch (error) {
+                handleAuthError(error);
+            } finally {
+                setLoading(elements.loginForm, false);
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            const businessName = elements.regBusinessName.value.trim();
+            const email = elements.regEmail.value.trim();
+            const password = elements.regPassword.value;
+            const confirmPassword = elements.regConfirmPassword.value;
+            
+            if (!businessName || !email || !password) {
+                showError('Please fill in all fields');
+                return;
+            }
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters');
+                return;
+            }
+            
+            setLoading(elements.registerForm, true);
+            
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                await updateProfile(user, { displayName: businessName });
+                
+                const tenantId = generateTenantId();
+                const timestamp = Date.now();
+                
+                const tenantData = {
+                    info: {
+                        name: businessName,
+                        email: email,
+                        createdAt: timestamp,
+                        ownerUid: user.uid
+                    },
+                    inventory: {},
+                    customers: {},
+                    orders: {},
+                    invoices: {},
+                    expenses: {},
+                    stats: {
+                        totalSales: 0,
+                        totalProfit: 0,
+                        totalExpenses: 0,
+                        lastUpdated: timestamp
+                    },
+                    logs: {
+                        [`register_${timestamp}`]: {
+                            action: 'TENANT_CREATED',
+                            user: email,
+                            timestamp: timestamp
+                        }
+                    }
+                };
+                
+                await set(ref(db, `tenants/${tenantId}`), tenantData);
+                
+                const userProfile = {
+                    email: email,
+                    tenantId: tenantId,
+                    role: 'owner',
+                    displayName: businessName,
+                    createdAt: timestamp,
+                    lastLogin: timestamp
+                };
+                
+                await set(ref(db, `users/${user.uid}`), userProfile);
+                storeSessionData(user.uid, tenantId, 'owner', true);
+                
+                showSuccess('Account created successfully! Redirecting...');
+                setTimeout(() => {
+                    redirectToDashboard();
+                }, 1000);
+                
+            } catch (error) {
+                handleAuthError(error);
+            } finally {
+                setLoading(elements.registerForm, false);
+            }
+        }
+
+        async function handleForgotPassword(e) {
+            e.preventDefault();
+            const email = elements.resetEmail.value.trim();
+            
+            if (!validateEmail(email)) {
+                showError('Please enter a valid email address');
+                return;
+            }
+            
+            setLoading(elements.forgotForm, true);
+            
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showSuccess('Password reset email sent! Check your inbox.');
+                elements.resetEmail.value = '';
+                setTimeout(() => {
+                    showLoginForm();
+                }, 2000);
+            } catch (error) {
+                handleAuthError(error);
+            } finally {
+                setLoading(elements.forgotForm, false);
+            }
+        }
+
+        async function getUserData(uid) {
+            try {
+                const snapshot = await get(ref(db, `users/${uid}`));
+                return snapshot.exists() ? snapshot.val() : null;
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                throw error;
+            }
+        }
+
+        function switchTab(tab) {
+            elements.loginTab.classList.toggle('active', tab === 'login');
+            elements.registerTab.classList.toggle('active', tab === 'register');
+            elements.loginForm.classList.toggle('active', tab === 'login');
+            elements.registerForm.classList.toggle('active', tab === 'register');
+            clearAlerts();
+        }
+
+        function showForgotForm() {
+            elements.loginForm.classList.remove('active');
+            elements.registerForm.classList.remove('active');
+            elements.forgotForm.classList.add('active');
+            elements.loginTab.classList.remove('active');
+            elements.registerTab.classList.remove('active');
+            clearAlerts();
+        }
+
+        function showLoginForm() {
+            elements.forgotForm.classList.remove('active');
+            elements.loginForm.classList.add('active');
+            elements.loginTab.classList.add('active');
+            elements.registerTab.classList.remove('active');
+            clearAlerts();
+        }
+
+        function generateTenantId() {
+            return 't_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function storeSessionData(uid, tenantId, role, remember = false) {
+            const sessionData = {
+                uid: uid,
+                tenantId: tenantId,
+                role: role,
+                loginTime: Date.now()
+            };
+            
+            if (remember) {
+                localStorage.setItem('nexus_session', JSON.stringify(sessionData));
+            } else {
+                sessionStorage.setItem('nexus_session', JSON.stringify(sessionData));
+            }
+        }
+
+        function redirectToDashboard() {
+            window.location.href = 'dashboard.html';
+        }
+
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function showError(message) {
+            showAlert(message, 'error');
+        }
+
+        function showSuccess(message) {
+            showAlert(message, 'success');
+        }
+
+        function showAlert(message, type = 'error') {
+            clearAlerts();
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            elements.alertContainer.appendChild(alert);
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        function clearAlerts() {
+            elements.alertContainer.innerHTML = '';
+        }
+
+        function setLoading(form, isLoading) {
+            const btn = form.querySelector('.btn-primary');
+            const btnText = btn.querySelector('.btn-text');
+            const btnLoader = btn.querySelector('.btn-loader');
+            
+            if (isLoading) {
+                btn.disabled = true;
+                btnText.classList.add('hidden');
+                btnLoader.classList.remove('hidden');
+            } else {
+                btn.disabled = false;
+                btnText.classList.remove('hidden');
+                btnLoader.classList.add('hidden');
+            }
+        }
+
+        function showLoading(message = 'Loading...') {
+            elements.loadingOverlay.querySelector('p').textContent = message;
+            elements.loadingOverlay.classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            elements.loadingOverlay.classList.add('hidden');
+        }
+
+        function handleAuthError(error) {
+            let message = 'An error occurred. Please try again.';
+            
+            switch (error.code) {
+                case 'auth/user-not-found':
+                case 'auth/wrong-password':
+                case 'auth/invalid-credential':
+                    message = 'Invalid email or password';
+                    break;
+                case 'auth/user-disabled':
+                    message = 'This account has been disabled';
+                    break;
+                case 'auth/email-already-in-use':
+                    message = 'An account with this email already exists';
+                    break;
+                case 'auth/weak-password':
+                    message = 'Password is too weak';
+                    break;
+                case 'auth/invalid-email':
+                    message = 'Invalid email address';
+                    break;
+                case 'auth/too-many-requests':
+                    message = 'Too many failed attempts. Please try again later.';
+                    break;
+                case 'auth/network-request-failed':
+                    message = 'Network error. Please check your connection.';
+                    break;
+                default:
+                    if (error.message) message = error.message;
+            }
+            
+            showError(message);
+        }
+
+        export { auth, db, getUserData };
+    </script>
+</body>
+</html>
